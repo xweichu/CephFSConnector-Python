@@ -1,0 +1,4 @@
+http://docs.ceph.com/docs/mimic/cephfs/hadoop/
+http://docs.ceph.com/docs/mimic/rados/api/python/
+https://github.com/ceph/ceph/blob/master/src/pybind/cephfs/cephfs.pyx
+https://github.com/ceph/cephfs-hadoop/blob/master/src/main/java/org/apache/hadoop/fs/ceph/CephTalker.java

@@ -1,0 +1,723 @@
+xweichu@aaron-ubuntu:~$ python
+Python 2.7.15rc1 (default, Nov 12 2018, 14:31:15) 
+[GCC 7.3.0] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import cephfs
+>>> test = cephfs.LibCephFS()
+>>> test
+<cephfs.LibCephFS object at 0x7f1cc4ee25d0>
+>>> test.read_conf_file('/etc/ceph/ceph.conf')
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: 'cephfs.LibCephFS' object has no attribute 'read_conf_file'
+>>> dir(test)
+['__class__', '__delattr__', '__doc__', '__enter__', '__exit__', '__format__', '__getattribute__', '__hash__', '__init__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__setstate__', '__sizeof__', '__str__', '__subclasshook__', 'abort_conn', 'chdir', 'chmod', 'close', 'closedir', 'conf_get', 'conf_parse_argv', 'conf_read_file', 'conf_set', 'create', 'create_with_rados', 'flock', 'fstat', 'fsync', 'get_instance_id', 'getcwd', 'getxattr', 'init', 'link', 'mds_command', 'mkdir', 'mkdirs', 'mount', 'open', 'opendir', 'read', 'readdir', 'readlink', 'rename', 'require_state', 'rmdir', 'setxattr', 'shutdown', 'stat', 'state', 'statfs', 'symlink', 'sync_fs', 'umask', 'unlink', 'unmount', 'version', 'write']
+>>> test.conf_read_file('/etc/ceph/ceph.conf')
+>>> test.conf_get('mon_host')
+u'v2:172.17.0.1:3300/0'
+>>> test.mount()
+>>> test.mkdir('test',8)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 765, in cephfs.LibCephFS.mkdir
+cephfs.Error: (13, "error in mkdir 'test': error code 13")
+>>> test.init()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 535, in cephfs.LibCephFS.init
+  File "cephfs.pyx", line 348, in cephfs.LibCephFS.require_state
+cephfs.LibCephFSStateError: You cannot perform that operation on a CephFS object in state mounted.
+>>> test.state
+'mounted'
+>>> test.get_instance_id()
+14150L
+>>> test.getcwd()
+'/'
+>>> test.open('test.txt',8)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 873, in cephfs.LibCephFS.open
+cephfs.ObjectNotFound: [Errno 2] error in open 'test.txt'
+>>> test.readdir('/')
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: Argument 'dir_handler' has incorrect type (expected cephfs.DirResult, got str)
+>>> test.opendir('/')
+<cephfs.DirResult object at 0x7f1cd4e13108>
+>>> dir = test.opendir('/')
+>>> dir
+<cephfs.DirResult object at 0x7f1cd4e13120>
+>>> dir(dir)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: 'cephfs.DirResult' object is not callable
+>>> 
+^C
+xweichu@aaron-ubuntu:~$ python
+Python 2.7.15rc1 (default, Nov 12 2018, 14:31:15) 
+[GCC 7.3.0] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import cephfs
+>>> test = cephfs.LibCephFS()
+>>> dir(test)
+['__class__', '__delattr__', '__doc__', '__enter__', '__exit__', '__format__', '__getattribute__', '__hash__', '__init__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__setstate__', '__sizeof__', '__str__', '__subclasshook__', 'abort_conn', 'chdir', 'chmod', 'close', 'closedir', 'conf_get', 'conf_parse_argv', 'conf_read_file', 'conf_set', 'create', 'create_with_rados', 'flock', 'fstat', 'fsync', 'get_instance_id', 'getcwd', 'getxattr', 'init', 'link', 'mds_command', 'mkdir', 'mkdirs', 'mount', 'open', 'opendir', 'read', 'readdir', 'readlink', 'rename', 'require_state', 'rmdir', 'setxattr', 'shutdown', 'stat', 'state', 'statfs', 'symlink', 'sync_fs', 'umask', 'unlink', 'unmount', 'version', 'write']
+>>> test.conf_read_file()
+>>> test.conf_read_file('/etc/ceph/ceph.conf')
+>>> test.mount()
+>>> test.getcwd()
+'/'
+>>> test_dir = test.opendir('/')
+>>> dir(test_dir)
+['__class__', '__delattr__', '__doc__', '__format__', '__getattribute__', '__hash__', '__init__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__setstate__', '__sizeof__', '__str__', '__subclasshook__']
+>>> test_dir
+<cephfs.DirResult object at 0x7f2f86bce108>
+>>> test.mkdir('ttt',8)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 765, in cephfs.LibCephFS.mkdir
+cephfs.Error: (13, "error in mkdir 'ttt': error code 13")
+>>> test.unmount()
+>>> test.mount('/mnt/test')
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 570, in cephfs.LibCephFS.mount
+cephfs.ObjectNotFound: [Errno 2] error calling ceph_mount
+>>> test.mount()
+>>> test.mkdir('test'.8)
+  File "<stdin>", line 1
+    test.mkdir('test'.8)
+                      ^
+SyntaxError: invalid syntax
+>>> test.mkdir('test',8)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 765, in cephfs.LibCephFS.mkdir
+cephfs.Error: (13, "error in mkdir 'test': error code 13")
+>>> test.getcwd()
+'/'
+>>> test.conf_get('keyfile')
+u''
+>>> test.mount()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 548, in cephfs.LibCephFS.mount
+  File "cephfs.pyx", line 348, in cephfs.LibCephFS.require_state
+cephfs.LibCephFSStateError: You cannot perform that operation on a CephFS object in state mounted.
+>>> test.chdir('mnt')
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 681, in cephfs.LibCephFS.chdir
+cephfs.ObjectNotFound: [Errno 2] chdir failed
+>>> test.mount()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 548, in cephfs.LibCephFS.mount
+  File "cephfs.pyx", line 348, in cephfs.LibCephFS.require_state
+cephfs.LibCephFSStateError: You cannot perform that operation on a CephFS object in state mounted.
+>>> test.conf_get('keyring')
+u'/etc/ceph/ceph.client.admin.keyring,/etc/ceph/ceph.keyring,/etc/ceph/keyring,/etc/ceph/keyring.bin,'
+>>> test.unmount()
+>>> test.mount('admin')
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 570, in cephfs.LibCephFS.mount
+cephfs.PermissionError: [Errno 1] error calling ceph_mount
+>>> test.unmount()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 577, in cephfs.LibCephFS.unmount
+  File "cephfs.pyx", line 348, in cephfs.LibCephFS.require_state
+cephfs.LibCephFSStateError: You cannot perform that operation on a CephFS object in state initialized.
+>>> test.conf_get('mon_host')
+u'v2:172.17.0.1:3300/0'
+>>> test.conf_set('mon_host', '172.12.0.1:3300')
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 529, in cephfs.LibCephFS.conf_set
+cephfs.Error: (38, 'error calling conf_set: error code 38')
+>>> test.conf_set('mon_host', '172.12.0.1:3300')
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 529, in cephfs.LibCephFS.conf_set
+cephfs.Error: (38, 'error calling conf_set: error code 38')
+>>> test = cephfs.LibCephFS()
+>>> test.conf_set('mon_host', '172.17.0.1:3300')
+>>> test.mount()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 547, in cephfs.LibCephFS.mount
+  File "cephfs.pyx", line 539, in cephfs.LibCephFS.init
+cephfs.Error: (13, 'error calling ceph_init: error code 13')
+>>> test.conf_read_file()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 423, in cephfs.LibCephFS.conf_read_file
+cephfs.Error: (38, 'error calling conf_read_file: error code 38')
+>>> test = cephfs.LibCephFS('admin')
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 368, in cephfs.LibCephFS.__cinit__
+  File "cephfs.pyx", line 388, in cephfs.LibCephFS.create
+TypeError: conf must be dict or None
+>>> test = cephfs.LibCephFS()
+>>> test.conf_read_file()
+>>> test.conf_get('mon_host')
+u'v2:172.17.0.1:3300/0'
+>>> test.mount('/mnt/test/')
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 570, in cephfs.LibCephFS.mount
+cephfs.ObjectNotFound: [Errno 2] error calling ceph_mount
+>>> test.mount()
+>>> test_root = test.open('/')
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 820, in cephfs.LibCephFS.open
+TypeError: open() takes at least 2 positional arguments (1 given)
+>>> test_root = test.opendir('/')
+>>> test.readdir(test_root)
+DirEntry(d_ino=1, d_off=1L, d_reclen=1, d_type=4, d_name='.')
+>>> test.readdir(test_root)
+DirEntry(d_ino=1, d_off=2L, d_reclen=1, d_type=4, d_name='..')
+>>> test.readdir(test_root)
+>>> test.readdir(test_root)
+>>> test.mkdir('./test',8)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 765, in cephfs.LibCephFS.mkdir
+cephfs.Error: (13, "error in mkdir './test': error code 13")
+>>> test.mkdir('./test',1)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 765, in cephfs.LibCephFS.mkdir
+cephfs.Error: (13, "error in mkdir './test': error code 13")
+>>> test.mkdir('./test',0)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 765, in cephfs.LibCephFS.mkdir
+cephfs.Error: (13, "error in mkdir './test': error code 13")
+>>> test.mkdir('./test',0)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 765, in cephfs.LibCephFS.mkdir
+cephfs.Error: (13, "error in mkdir './test': error code 13")
+>>> test_dir = test.opendir('/')
+>>> test_dir
+<cephfs.DirResult object at 0x7f2f86bce138>
+>>> test.readdir(test_dir)
+DirEntry(d_ino=1, d_off=1L, d_reclen=1, d_type=4, d_name='.')
+>>> test.readdir(test_dir)
+DirEntry(d_ino=1, d_off=2L, d_reclen=1, d_type=4, d_name='..')
+>>> test.readdir(test_dir)
+>>> test.open('test',0)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 873, in cephfs.LibCephFS.open
+cephfs.ObjectNotFound: [Errno 2] error in open 'test'
+>>> test.open('test',1)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 873, in cephfs.LibCephFS.open
+cephfs.ObjectNotFound: [Errno 2] error in open 'test'
+>>> test.open('test',2)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 873, in cephfs.LibCephFS.open
+cephfs.ObjectNotFound: [Errno 2] error in open 'test'
+>>> test.open('test',3)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 873, in cephfs.LibCephFS.open
+cephfs.ObjectNotFound: [Errno 2] error in open 'test'
+>>> test.open('test',4)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 873, in cephfs.LibCephFS.open
+cephfs.ObjectNotFound: [Errno 2] error in open 'test'
+>>> test.open('test',5)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 873, in cephfs.LibCephFS.open
+cephfs.ObjectNotFound: [Errno 2] error in open 'test'
+>>> test.open('test',6)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 873, in cephfs.LibCephFS.open
+cephfs.ObjectNotFound: [Errno 2] error in open 'test'
+>>> test.open('test',7)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 873, in cephfs.LibCephFS.open
+cephfs.ObjectNotFound: [Errno 2] error in open 'test'
+>>> test.open('test',8)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 873, in cephfs.LibCephFS.open
+cephfs.ObjectNotFound: [Errno 2] error in open 'test'
+>>> test.open('test',9)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 873, in cephfs.LibCephFS.open
+cephfs.ObjectNotFound: [Errno 2] error in open 'test'
+>>> test.open('test',10)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 873, in cephfs.LibCephFS.open
+cephfs.ObjectNotFound: [Errno 2] error in open 'test'
+>>> dir(test)
+['__class__', '__delattr__', '__doc__', '__enter__', '__exit__', '__format__', '__getattribute__', '__hash__', '__init__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__setstate__', '__sizeof__', '__str__', '__subclasshook__', 'abort_conn', 'chdir', 'chmod', 'close', 'closedir', 'conf_get', 'conf_parse_argv', 'conf_read_file', 'conf_set', 'create', 'create_with_rados', 'flock', 'fstat', 'fsync', 'get_instance_id', 'getcwd', 'getxattr', 'init', 'link', 'mds_command', 'mkdir', 'mkdirs', 'mount', 'open', 'opendir', 'read', 'readdir', 'readlink', 'rename', 'require_state', 'rmdir', 'setxattr', 'shutdown', 'stat', 'state', 'statfs', 'symlink', 'sync_fs', 'umask', 'unlink', 'unmount', 'version', 'write']
+>>> test.fsync()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 643, in cephfs.LibCephFS.fsync
+TypeError: fsync() takes exactly 2 positional arguments (0 given)
+>>> test.create('test')
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 388, in cephfs.LibCephFS.create
+TypeError: conf must be dict or None
+>>> test.sync_fs()
+>>> test.opendir('./test')
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 700, in cephfs.LibCephFS.opendir
+cephfs.ObjectNotFound: [Errno 2] opendir failed
+>>> test.mkdir('./test',777)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 765, in cephfs.LibCephFS.mkdir
+cephfs.Error: (13, "error in mkdir './test': error code 13")
+>>> test.mkdir('./test', 777)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 765, in cephfs.LibCephFS.mkdir
+cephfs.Error: (13, "error in mkdir './test': error code 13")
+>>> test.chmod('/',777)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 784, in cephfs.LibCephFS.chmod
+cephfs.PermissionError: [Errno 1] error in chmod '/'
+>>> test.unmout()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: 'cephfs.LibCephFS' object has no attribute 'unmout'
+>>> test.unmount()
+>>> test.conf_get('user_id')
+>>> test.conf_get('userid')
+>>> test.conf_get('id')
+>>> test.conf_get('auth_id')
+>>> test.conf_get('authid')
+>>> test.conf_get('keyfile')
+u''
+>>> test.conf_get('keyring')
+u'/etc/ceph/ceph.client.admin.keyring,/etc/ceph/ceph.keyring,/etc/ceph/keyring,/etc/ceph/keyring.bin,'
+>>> test.conf_set('keyfile', '/etc/ceph/ceph.client.admin.keyring')
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 529, in cephfs.LibCephFS.conf_set
+cephfs.Error: (38, 'error calling conf_set: error code 38')
+>>> test.conf_set('keyfile', '/etc/ceph/ceph.client.admin.keyring')
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 529, in cephfs.LibCephFS.conf_set
+cephfs.Error: (38, 'error calling conf_set: error code 38')
+>>> test.mout()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: 'cephfs.LibCephFS' object has no attribute 'mout'
+>>> test.mount()
+>>> test.conf_set('keyfile', '/etc/ceph/ceph.client.admin.keyring')
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 529, in cephfs.LibCephFS.conf_set
+cephfs.Error: (38, 'error calling conf_set: error code 38')
+>>> test.conf_set('keyfile', '/etc/ceph/keyring.bin')
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 529, in cephfs.LibCephFS.conf_set
+cephfs.Error: (38, 'error calling conf_set: error code 38')
+>>> test.conf_set('keyfile', '/etc/ceph/keyring)
+  File "<stdin>", line 1
+    test.conf_set('keyfile', '/etc/ceph/keyring)
+                                               ^
+SyntaxError: EOL while scanning string literal
+>>> test.conf_set('keyfile', '/etc/ceph/keyring')
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 529, in cephfs.LibCephFS.conf_set
+cephfs.Error: (38, 'error calling conf_set: error code 38')
+>>> test.conf_set('keyfile', '/etc/ceph/ceph.keyring')
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 529, in cephfs.LibCephFS.conf_set
+cephfs.Error: (38, 'error calling conf_set: error code 38')
+>>> test.conf_set("client_permissions", "0");
+>>> test.conf_set("client_permissions", "0")
+>>> test.mount()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 548, in cephfs.LibCephFS.mount
+  File "cephfs.pyx", line 348, in cephfs.LibCephFS.require_state
+cephfs.LibCephFSStateError: You cannot perform that operation on a CephFS object in state mounted.
+>>> test.unmount()
+>>> test.mount()
+>>> test.mkdir("test", 0777)
+>>> test.chdir("test")
+>>> test.getcwd()
+'/test'
+>>> dir(test)
+['__class__', '__delattr__', '__doc__', '__enter__', '__exit__', '__format__', '__getattribute__', '__hash__', '__init__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__setstate__', '__sizeof__', '__str__', '__subclasshook__', 'abort_conn', 'chdir', 'chmod', 'close', 'closedir', 'conf_get', 'conf_parse_argv', 'conf_read_file', 'conf_set', 'create', 'create_with_rados', 'flock', 'fstat', 'fsync', 'get_instance_id', 'getcwd', 'getxattr', 'init', 'link', 'mds_command', 'mkdir', 'mkdirs', 'mount', 'open', 'opendir', 'read', 'readdir', 'readlink', 'rename', 'require_state', 'rmdir', 'setxattr', 'shutdown', 'stat', 'state', 'statfs', 'symlink', 'sync_fs', 'umask', 'unlink', 'unmount', 'version', 'write']
+>>> fd = test.open("my.txt",2|8, 0777)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 873, in cephfs.LibCephFS.open
+cephfs.ObjectNotFound: [Errno 2] error in open 'my.txt'
+>>> fd = test.open("my.txt",8, 0777)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 873, in cephfs.LibCephFS.open
+cephfs.ObjectNotFound: [Errno 2] error in open 'my.txt'
+>>> fd = test.open("./my.txt",8, 0777)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 873, in cephfs.LibCephFS.open
+cephfs.ObjectNotFound: [Errno 2] error in open './my.txt'
+>>> fd = test.open("/test/my.txt",8, 0777)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 873, in cephfs.LibCephFS.open
+cephfs.ObjectNotFound: [Errno 2] error in open '/test/my.txt'
+>>> fd = test.open("/test/my.txt",8, 0600)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 873, in cephfs.LibCephFS.open
+cephfs.ObjectNotFound: [Errno 2] error in open '/test/my.txt'
+>>> test.getcwd()
+'/test'
+>>> fd = test.open("/test/my.txt",8, 0600)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 873, in cephfs.LibCephFS.open
+cephfs.ObjectNotFound: [Errno 2] error in open '/test/my.txt'
+>>> fd = test.open()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 820, in cephfs.LibCephFS.open
+TypeError: open() takes at least 2 positional arguments (0 given)
+>>> fd = test.open("/test/my.txt",8)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 873, in cephfs.LibCephFS.open
+cephfs.ObjectNotFound: [Errno 2] error in open '/test/my.txt'
+>>> fd = test.open("/test/my.txt",0800)
+  File "<stdin>", line 1
+    fd = test.open("/test/my.txt",0800)
+                                     ^
+SyntaxError: invalid token
+>>> fd = test.open("/test/my.txt",0600)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 873, in cephfs.LibCephFS.open
+cephfs.ObjectNotFound: [Errno 2] error in open '/test/my.txt'
+>>> fd = test.open("/test/my.txt",'w')
+>>> fd = test.open("/test/my.txt",'w')
+>>> fd
+11
+>>> fd = test.open("/test/my.txt",'w')
+>>> fd
+12
+>>> dir(test)
+['__class__', '__delattr__', '__doc__', '__enter__', '__exit__', '__format__', '__getattribute__', '__hash__', '__init__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__setstate__', '__sizeof__', '__str__', '__subclasshook__', 'abort_conn', 'chdir', 'chmod', 'close', 'closedir', 'conf_get', 'conf_parse_argv', 'conf_read_file', 'conf_set', 'create', 'create_with_rados', 'flock', 'fstat', 'fsync', 'get_instance_id', 'getcwd', 'getxattr', 'init', 'link', 'mds_command', 'mkdir', 'mkdirs', 'mount', 'open', 'opendir', 'read', 'readdir', 'readlink', 'rename', 'require_state', 'rmdir', 'setxattr', 'shutdown', 'stat', 'state', 'statfs', 'symlink', 'sync_fs', 'umask', 'unlink', 'unmount', 'version', 'write']
+>>> ts_dir = test.opendir('.')
+>>> test.readdir(ts_dir)
+DirEntry(d_ino=1099511627776, d_off=1L, d_reclen=1, d_type=4, d_name='.')
+>>> test.readdir(ts_dir)
+DirEntry(d_ino=1, d_off=2L, d_reclen=1, d_type=4, d_name='..')
+>>> test.readdir(ts_dir)
+DirEntry(d_ino=1099511627777, d_off=1152519081203597315L, d_reclen=1, d_type=8, d_name='my.txt')
+>>> test.readdir(ts_dir)
+>>> test.write(fd,b'testttt',-1)
+7
+>>> test.read(fd,0,3)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 922, in cephfs.LibCephFS.read
+cephfs.Error: (9, 'error in read: error code 9')
+>>> test.read(fd,0,0)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 922, in cephfs.LibCephFS.read
+cephfs.Error: (9, 'error in read: error code 9')
+>>> test.listdir()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: 'cephfs.LibCephFS' object has no attribute 'listdir'
+>>> test.read(fd,3,0)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 922, in cephfs.LibCephFS.read
+cephfs.Error: (9, 'error in read: error code 9')
+>>> test.read(fd,0,3)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 922, in cephfs.LibCephFS.read
+cephfs.Error: (9, 'error in read: error code 9')
+>>> fd
+12
+>>> ts_dir = test.opendir('.')
+>>> test.readdir(ts_dir)
+DirEntry(d_ino=1099511627776, d_off=1L, d_reclen=1, d_type=4, d_name='.')
+>>> test.readdir(ts_dir)
+DirEntry(d_ino=1, d_off=2L, d_reclen=1, d_type=4, d_name='..')
+>>> test.readdir(ts_dir)
+DirEntry(d_ino=1099511627777, d_off=1152921504606846976L, d_reclen=1, d_type=8, d_name='my.txt')
+>>> test.write(fd,b'testttt',-1)
+7
+>>> test.write(fd,b'testttteee',-1)
+10
+>>> test.read(fd,-1,1)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 922, in cephfs.LibCephFS.read
+cephfs.Error: (9, 'error in read: error code 9')
+>>> test.read(fd,-1,2)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 922, in cephfs.LibCephFS.read
+cephfs.Error: (9, 'error in read: error code 9')
+>>> test.read(fd,3,2)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 922, in cephfs.LibCephFS.read
+cephfs.Error: (9, 'error in read: error code 9')
+>>> test.close(fd)
+>>> test.read(fd,0,2)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 922, in cephfs.LibCephFS.read
+cephfs.Error: (9, 'error in read: error code 9')
+>>> fd
+12
+>>> fd = test.open('my.txt','r')
+>>> fd
+12
+>>> test.read(fd,-1,2)
+'te'
+>>> test.read(fd,-1,2)
+'st'
+>>> test.read(fd,-1,2)
+'tt'
+>>> test.read(fd,-1,2)
+'tt'
+>>> test.read(fd,-1,2)
+'es'
+>>> test.read(fd,-1,2)
+'tt'
+>>> test.read(fd,-1,2)
+'tt'
+>>> test.read(fd,-1,2)
+'te'
+>>> test.read(fd,-1,2)
+'st'
+>>> test.read(fd,-1,2)
+'tt'
+>>> test.read(fd,-1,2)
+'te'
+>>> test.read(fd,-1,2)
+'ee'
+>>> dir(test)
+['__class__', '__delattr__', '__doc__', '__enter__', '__exit__', '__format__', '__getattribute__', '__hash__', '__init__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__setstate__', '__sizeof__', '__str__', '__subclasshook__', 'abort_conn', 'chdir', 'chmod', 'close', 'closedir', 'conf_get', 'conf_parse_argv', 'conf_read_file', 'conf_set', 'create', 'create_with_rados', 'flock', 'fstat', 'fsync', 'get_instance_id', 'getcwd', 'getxattr', 'init', 'link', 'mds_command', 'mkdir', 'mkdirs', 'mount', 'open', 'opendir', 'read', 'readdir', 'readlink', 'rename', 'require_state', 'rmdir', 'setxattr', 'shutdown', 'stat', 'state', 'statfs', 'symlink', 'sync_fs', 'umask', 'unlink', 'unmount', 'version', 'write']
+>>> test
+<cephfs.LibCephFS object at 0x7f2f76c9dc50>
+>>> test.getcwd()
+'/test'
+>>> test.rename('my.txt','your.txt')
+>>> fd = test.open('my.txt','r')
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 873, in cephfs.LibCephFS.open
+cephfs.ObjectNotFound: [Errno 2] error in open 'my.txt'
+>>> fd = test.open('you.txt','r')
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 873, in cephfs.LibCephFS.open
+cephfs.ObjectNotFound: [Errno 2] error in open 'you.txt'
+>>> fd = test.open('your.txt','r')
+>>> test.read(fd,-1,10)
+'testttttes'
+>>> test.close(fd)
+>>> test.unmount()
+>>> test.mount()
+>>> dir(test)
+['__class__', '__delattr__', '__doc__', '__enter__', '__exit__', '__format__', '__getattribute__', '__hash__', '__init__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__setstate__', '__sizeof__', '__str__', '__subclasshook__', 'abort_conn', 'chdir', 'chmod', 'close', 'closedir', 'conf_get', 'conf_parse_argv', 'conf_read_file', 'conf_set', 'create', 'create_with_rados', 'flock', 'fstat', 'fsync', 'get_instance_id', 'getcwd', 'getxattr', 'init', 'link', 'mds_command', 'mkdir', 'mkdirs', 'mount', 'open', 'opendir', 'read', 'readdir', 'readlink', 'rename', 'require_state', 'rmdir', 'setxattr', 'shutdown', 'stat', 'state', 'statfs', 'symlink', 'sync_fs', 'umask', 'unlink', 'unmount', 'version', 'write']
+>>> mydir = test.opendir('/')
+>>> test.readdir(mydir)
+DirEntry(d_ino=1, d_off=1L, d_reclen=1, d_type=4, d_name='.')
+>>> test.readdir(mydir)
+DirEntry(d_ino=1, d_off=2L, d_reclen=1, d_type=4, d_name='..')
+>>> test.readdir(mydir)
+DirEntry(d_ino=1099511627778, d_off=1150138986958684163L, d_reclen=1, d_type=4, d_name='testDir')
+>>> test.readdir(mydir)
+DirEntry(d_ino=1099511627776, d_off=1152511023039643651L, d_reclen=1, d_type=4, d_name='test')
+>>> test.chdir('testDir')
+>>> test.getcwd()
+'/testDir'
+>>> my_dir = test.opendir('/testDir')
+>>> test.readdir(my_dir)
+DirEntry(d_ino=1099511627778, d_off=1L, d_reclen=1, d_type=4, d_name='.')
+>>> test.readdir(my_dir)
+DirEntry(d_ino=1, d_off=2L, d_reclen=1, d_type=4, d_name='..')
+>>> test.readdir(my_dir)
+DirEntry(d_ino=1099511627779, d_off=1152519081203597315L, d_reclen=1, d_type=8, d_name='my.txt')
+>>> test.unlink('my.txt')
+>>> my_dir = test.opendir('/testDir')
+>>> test.readdir(my_dir)
+DirEntry(d_ino=1099511627778, d_off=1L, d_reclen=1, d_type=4, d_name='.')
+>>> test.readdir(my_dir)
+DirEntry(d_ino=1, d_off=2L, d_reclen=1, d_type=4, d_name='..')
+>>> test.readdir(my_dir)
+>>> test.chdir('/')
+>>> test.rmdir('testDir')
+>>> test.unmount()
+>>> test.mount()
+>>> test.rmdir('testDir')
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 818, in cephfs.LibCephFS.rmdir
+cephfs.Error: (39, "error in rmdir 'testDir': error code 39")
+>>> test.unlink('/testDir/my.txt')
+>>> test.rmdir('testDir')
+>>> test.mount()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 548, in cephfs.LibCephFS.mount
+  File "cephfs.pyx", line 348, in cephfs.LibCephFS.require_state
+cephfs.LibCephFSStateError: You cannot perform that operation on a CephFS object in state mounted.
+>>> test.unmount()
+>>> test.mount()
+>>> test.chdir('test')
+>>> test.getcwd()
+'/test'
+>>> mydir = test.opendir('/test')
+>>> test.readdir(mydir)
+DirEntry(d_ino=1099511627776, d_off=1L, d_reclen=1, d_type=4, d_name='.')
+>>> test.readdir(mydir)
+DirEntry(d_ino=1, d_off=2L, d_reclen=1, d_type=4, d_name='..')
+>>> test.readdir(mydir)
+DirEntry(d_ino=1099511627777, d_off=1150061126986235907L, d_reclen=1, d_type=8, d_name='your.txt')
+>>> test.readdir(mydir)
+>>> mydir = test.opendir('/test')
+>>> direntry = test.readdir(mydir)
+>>> direntry = test.readdir(mydir)
+>>> direntry = test.readdir(mydir)
+>>> dir(direntry)
+['DT_DIR', 'DT_LNK', 'DT_REG', '__add__', '__class__', '__contains__', '__delattr__', '__dict__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__getitem__', '__getnewargs__', '__getslice__', '__getstate__', '__gt__', '__hash__', '__init__', '__iter__', '__le__', '__len__', '__lt__', '__module__', '__mul__', '__ne__', '__new__', '__qualname__', '__reduce__', '__reduce_ex__', '__repr__', '__rmul__', '__setattr__', '__sizeof__', '__slots__', '__str__', '__subclasshook__', '_asdict', '_fields', '_make', '_replace', 'count', 'd_ino', 'd_name', 'd_off', 'd_reclen', 'd_type', 'index', 'is_dir', 'is_file', 'is_symbol_file']
+>>> direntry.index
+<built-in method index of DirEntry object at 0x7f2f86ab0980>
+>>> direntry.is_file()
+False
+>>> direntry.is_dir()
+False
+>>> mydir = test.opendir('/test')
+>>> direntry.is_dir()
+False
+>>> direntry = test.readdir(mydir)
+>>> direntry.is_dir()
+True
+>>> direntry = test.readdir(mydir)
+>>> direntry.is_dir()
+True
+>>> direntry = test.readdir(mydir)
+>>> direntry.is_dir()
+False
+>>> direntry.is_file()
+False
+>>> direntry.is_synbol_file()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: 'DirEntry' object has no attribute 'is_synbol_file'
+>>> direntry.is_symbol_file()
+False
+>>> direntry.d_name
+'your.txt'
+>>> direntry.d_ino
+1099511627777
+>>> direntry.count
+<built-in method count of DirEntry object at 0x7f2f86ab0910>
+>>> direntry.count()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: count() takes exactly one argument (0 given)
+>>> test.open('your.txt','wr')
+10
+>>> test.fsat(10)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: 'cephfs.LibCephFS' object has no attribute 'fsat'
+>>> test.fstat(10)
+StatResult(st_dev=18446744073709551614L, st_ino=1099511627777L, st_mode=32768, st_nlink=1, st_uid=1000, st_gid=1000, st_rdev=0L, st_size=0L, st_blksize=4194304, st_blocks=0L, st_atime=datetime.datetime(2019, 4, 12, 14, 41, 7), st_mtime=datetime.datetime(2019, 4, 12, 16, 59, 33), st_ctime=datetime.datetime(2019, 4, 12, 16, 59, 33))
+>>> test.stat('your.txt')
+StatResult(st_dev=18446744073709551614L, st_ino=1099511627777L, st_mode=32768, st_nlink=1, st_uid=1000, st_gid=1000, st_rdev=0L, st_size=0L, st_blksize=4194304, st_blocks=0L, st_atime=datetime.datetime(2019, 4, 12, 14, 41, 7), st_mtime=datetime.datetime(2019, 4, 12, 16, 59, 33), st_ctime=datetime.datetime(2019, 4, 12, 16, 59, 33))
+>>> test.close(10)
+>>> test.open('your.txt', 'wr')
+10
+>>> test.write(10, b '1234567890', -1)
+  File "<stdin>", line 1
+    test.write(10, b '1234567890', -1)
+                                ^
+SyntaxError: invalid syntax
+>>> test.write(10, b'123456789', -1)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 962, in cephfs.LibCephFS.write
+cephfs.Error: (9, 'error in write: error code 9')
+>>> test.write(10, b'123456789', -1)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 962, in cephfs.LibCephFS.write
+cephfs.Error: (9, 'error in write: error code 9')
+>>> test.write(10, b '1234567890', -1)
+  File "<stdin>", line 1
+    test.write(10, b '1234567890', -1)
+                                ^
+SyntaxError: invalid syntax
+>>> test.write(10, b '1234567890', -1)
+  File "<stdin>", line 1
+    test.write(10, b '1234567890', -1)
+                                ^
+SyntaxError: invalid syntax
+>>> test.write(10, b'1234567890', -1)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 962, in cephfs.LibCephFS.write
+cephfs.Error: (9, 'error in write: error code 9')
+>>> test.write(10, b'1234567890', 0)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 962, in cephfs.LibCephFS.write
+cephfs.Error: (9, 'error in write: error code 9')
+>>> test.write(10, b'1234567890', 10)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "cephfs.pyx", line 962, in cephfs.LibCephFS.write
+cephfs.Error: (9, 'error in write: error code 9')
+>>> test.close(10)
+>>> test.unlink('your.txt')
+>>> test.open('my.txt','w')
+10
+>>> test.write(10, b'test', -1)
+4
+>>> test.fstat(10)
+StatResult(st_dev=18446744073709551614L, st_ino=1099511627786L, st_mode=32768, st_nlink=1, st_uid=1000, st_gid=1000, st_rdev=0L, st_size=4L, st_blksize=4194304, st_blocks=1L, st_atime=datetime.datetime(2019, 4, 12, 17, 6, 28), st_mtime=datetime.datetime(2019, 4, 12, 17, 6, 50), st_ctime=datetime.datetime(2019, 4, 12, 17, 6, 50))
+>>> st = test.fstat(10)
+>>> st
+StatResult(st_dev=18446744073709551614L, st_ino=1099511627786L, st_mode=32768, st_nlink=1, st_uid=1000, st_gid=1000, st_rdev=0L, st_size=4L, st_blksize=4194304, st_blocks=1L, st_atime=datetime.datetime(2019, 4, 12, 17, 6, 28), st_mtime=datetime.datetime(2019, 4, 12, 17, 6, 50), st_ctime=datetime.datetime(2019, 4, 12, 17, 6, 50))
+>>> dir(st)
+['__add__', '__class__', '__contains__', '__delattr__', '__dict__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__getitem__', '__getnewargs__', '__getslice__', '__getstate__', '__gt__', '__hash__', '__init__', '__iter__', '__le__', '__len__', '__lt__', '__module__', '__mul__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__rmul__', '__setattr__', '__sizeof__', '__slots__', '__str__', '__subclasshook__', '_asdict', '_fields', '_make', '_replace', 'count', 'index', 'st_atime', 'st_blksize', 'st_blocks', 'st_ctime', 'st_dev', 'st_gid', 'st_ino', 'st_mode', 'st_mtime', 'st_nlink', 'st_rdev', 'st_size', 'st_uid']
+>>> st.st_size()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: 'long' object is not callable
+>>> st.st_size
+4L
+>>> test.unmount()
