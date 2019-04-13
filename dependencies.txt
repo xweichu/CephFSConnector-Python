@@ -1,0 +1,4 @@
+# libcephfs for C++, Python, and Java
+sudo apt-get install python-cephfs
+sudo apt-get install libcephfs-dev
+sudo apt-get install libcephfs-java
