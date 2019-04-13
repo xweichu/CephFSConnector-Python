@@ -1,0 +1,1 @@
+docker run -d --name demo -e MON_IP=172.17.0.1 -e CEPH_PUBLIC_NETWORK=172.17.0.1/24 --net=host -v /var/lib/ceph:/var/lib/ceph -v /etc/ceph:/etc/ceph -e CEPH_DEMO_UID=qqq -e CEPH_DEMO_ACCESS_KEY=qqq -e CEPH_DEMO_SECRET_KEY=qqq -e CEPH_DEMO_BUCKET=qqq ceph/daemon demo
