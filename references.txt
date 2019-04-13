@@ -2,3 +2,6 @@ http://docs.ceph.com/docs/mimic/cephfs/hadoop/
 http://docs.ceph.com/docs/mimic/rados/api/python/
 https://github.com/ceph/ceph/blob/master/src/pybind/cephfs/cephfs.pyx
 https://github.com/ceph/cephfs-hadoop/blob/master/src/main/java/org/apache/hadoop/fs/ceph/CephTalker.java
+https://github.com/ceph/ceph/blob/41d3fdc554ce920a631c7c6699a383134173fcff/src/java/test/com/ceph/fs/CephMountTest.java
+https://github.com/ceph/ceph/blob/master/src/libcephfs.cc
+http://docs.ceph.com/docs/mimic/api/libcephfs-java/javadoc/
