@@ -38,7 +38,7 @@ class FileObject:
     
     def read(self, size = -1):
         if size == -1:
-            result = self._cephFS.read(self._fd, int(self._seek), self._cephFS.fstat(self._fd).st_size)
+            result = self._cephFS.read(self._fd, int(self._seek), int(self._cephFS.fstat(self._fd).st_size))
             self._seek = self._cephFS.fstat(self._fd).st_size
             return result
 
