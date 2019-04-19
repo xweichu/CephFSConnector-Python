@@ -36,8 +36,13 @@ class FileObject:
     def next(self):
         raise Exception('next() not implmented!')
     
-    def read(self, size):
-        result = self._cephFS.read(self._fd, self._seek, size)
+    def read(self, size = -1):
+        if size == -1:
+            result = self._cephFS.read(self._fd, int(self._seek), self._cephFS.fstat(self._fd).st_size)
+            self._seek = self._cephFS.fstat(self._fd).st_size
+            return result
+
+        result = self._cephFS.read(self._fd, int(self._seek), size)
         self._setSeek('r',size)
         return result
         
@@ -53,7 +58,10 @@ class FileObject:
     def _setSeek(self, mode, size):
         fileLen = self._cephFS.fstat(self._fd).st_size
         if mode == 'r':
-            self._seek = (size + self._seek)%fileLen
+            if (size + self._seek)%fileLen < 1:
+                self._seek = size + self._seek
+            else:
+                self._seek = fileLen
 
     def write(self):
         raise Exception('next() not implmented!')
