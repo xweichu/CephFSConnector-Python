@@ -1,4 +1,4 @@
-import CephFS
+from CephFS import CephFS
 
 class FileObject:
     
