@@ -3,7 +3,6 @@ import cephfs
 # Configure CephFS and mount the CephFS.
 # Only implemented simple CephFS management functions
 # More implementations later
-
 class CephFS:
 
     def __init__(self, confFilePath = None, clientPermission = '0'):

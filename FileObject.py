@@ -7,6 +7,7 @@ class FileObject:
         self._path = file
         self._mode = mode
         self._fd = -1
+        self._seek = 0
 
         if self._cephFS.state != 'mounted':
             raise Exception('CephFS is not mounted!')
@@ -32,7 +33,33 @@ class FileObject:
     def isatty(self):
         return False
 
+    def next(self):
+        raise Exception('next() not implmented!')
     
+    def read(self, size):
+        result = self._cephFS.read(self._fd, self._seek, size)
+        self._setSeek('r',size)
+        return result
+        
+    
+    def seek(self, offset, whence = 0):
+        ret = self._cephFS.lseek(self._fd, offset, whence)
+        self._seek = ret
+        return ret
+    
+    def tell(self):
+        return self._seek
+    
+    def _setSeek(self, mode, size):
+        fileLen = self._cephFS.fstat(self._fd).st_size
+        if mode == 'r':
+            self._seek = (size + self._seek)%fileLen
+
+    def write(self):
+        raise Exception('next() not implmented!')
+
+            
+
     
 
     
