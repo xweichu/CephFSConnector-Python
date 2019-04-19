@@ -58,7 +58,7 @@ class FileObject:
     def _setSeek(self, mode, size):
         fileLen = self._cephFS.fstat(self._fd).st_size
         if mode == 'r':
-            if (size + self._seek)%fileLen < 1:
+            if (size + self._seek) / fileLen < 1:
                 self._seek = size + self._seek
             else:
                 self._seek = fileLen
